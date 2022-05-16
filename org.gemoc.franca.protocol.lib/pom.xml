@@ -1,0 +1,69 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<groupId>org.gemoc.franca.protocol</groupId>
+		<artifactId>org.gemoc.franca.protocol.parent</artifactId>
+		<version>0.0.1-SNAPSHOT</version>
+	</parent>
+	<artifactId>org.gemoc.franca.protocol.lib</artifactId>
+	<properties>
+		<java.version>11</java.version>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<franca.version>0.13.1</franca.version>
+		<xtext.version>2.14.0</xtext.version>
+		<junit.version>4.13.1</junit.version>
+	</properties>
+	<dependencies>
+		<dependency>
+			<groupId>org.franca</groupId>
+			<artifactId>org.franca.core</artifactId>
+			<version>0.13.1</version>
+		</dependency>
+		<dependency>
+			<groupId>org.franca</groupId>
+			<artifactId>org.franca.deploymodel.dsl</artifactId>
+			<version>0.13.1</version>
+		</dependency>
+		<dependency>
+			<groupId>org.eclipse.xtext</groupId>
+			<artifactId>org.eclipse.xtext</artifactId>
+			<version>${xtext.version}</version>
+		</dependency>
+	</dependencies>
+
+	<build>
+		<resources>
+			<resource>
+				<directory>models</directory>
+			</resource>
+		</resources>
+		<plugins>
+			<plugin>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<version>3.7.0</version>
+				<configuration>
+					<source>${java.version}</source>
+					<target>${java.version}</target>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.franca</groupId>
+				<artifactId>franca-deploymodel-maven-plugin</artifactId>
+				<version>0.13.1-SNAPSHOT</version>
+				<executions>
+					<execution>
+						<goals>
+							<goal>generate</goal>
+						</goals>
+
+						<configuration>
+							<outputDirectory>${project.basedir}/src-gen</outputDirectory>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+
+			
+		</plugins>
+	</build>
+</project>

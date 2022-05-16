@@ -1,0 +1,31 @@
+import "classpath:/org/gemoc/franca/protocol/lib/idl/eaop.fidl"
+import "classpath:/org/gemoc/franca/protocol/lib/spec/WsJsonRpcSpec.fdepl"
+
+
+define org.gemoc.franca.protocol.lib.spec.WsJsonRpcSpec for interface org.gemoc.franca.protocol.lib.idl.EngineAddonProtocolClient {
+	Opposite = & org.gemoc.franca.protocol.lib.idl.EngineAddonProtocolServer
+	IsClient = true
+	method engineAboutToStart {
+		CallSemantics = synchronous
+		IsOptional = false
+		IsNotification =  true
+	}
+	method engineStarted {
+		CallSemantics = synchronous
+		IsOptional = false
+		IsNotification =  true
+	}
+	
+}
+
+define org.gemoc.franca.protocol.lib.spec.WsJsonRpcSpec for interface org.gemoc.franca.protocol.lib.idl.EngineAddonProtocolServer {
+	Opposite = & org.gemoc.franca.protocol.lib.idl.EngineAddonProtocolClient
+	IsClient = false
+	method initialization {
+		CallSemantics = synchronous
+		IsOptional = false
+		IsNotification =  true
+	}
+	
+}
+
