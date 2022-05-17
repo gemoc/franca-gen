@@ -1,4 +1,6 @@
-specification org.gemoc.franca.protocol.lib.spec.RPCSpec {
+package org.gemoc.franca.protocol.lib.spec
+
+specification RPCSpec {
 	for methods {
 		CallSemantics: {synchronous, asynchronous} (default: asynchronous);
 		IsOptional: Boolean (default: true);

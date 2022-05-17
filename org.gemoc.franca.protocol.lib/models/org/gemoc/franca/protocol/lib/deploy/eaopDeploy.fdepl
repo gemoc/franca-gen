@@ -1,3 +1,5 @@
+package org.gemoc.franca.protocol.lib.deploy
+
 import "classpath:/org/gemoc/franca/protocol/lib/idl/eaop.fidl"
 import "classpath:/org/gemoc/franca/protocol/lib/spec/WsJsonRpcSpec.fdepl"
 

@@ -1,5 +1,6 @@
-import "RPCSpec.fdepl"
-specification org.gemoc.franca.protocol.lib.spec.WsJsonRpcSpec extends org.gemoc.franca.protocol.lib.spec.RPCSpec{
+package org.gemoc.franca.protocol.lib.spec
+import "classpath:/org/gemoc/franca/protocol/lib/spec/RPCSpec.fdepl"
+specification WsJsonRpcSpec extends org.gemoc.franca.protocol.lib.spec.RPCSpec{
 	for providers{
 		EndpointUri: String;
 		Port: Integer(optional);

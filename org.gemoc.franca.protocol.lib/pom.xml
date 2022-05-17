@@ -46,7 +46,7 @@
 					<target>${java.version}</target>
 				</configuration>
 			</plugin>
-			<plugin>
+			<!--plugin>
 				<groupId>org.franca</groupId>
 				<artifactId>franca-deploymodel-maven-plugin</artifactId>
 				<version>0.13.1-SNAPSHOT</version>
@@ -61,9 +61,26 @@
 						</configuration>
 					</execution>
 				</executions>
+			</plugin-->
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>build-helper-maven-plugin</artifactId>
+				<version>3.2.0</version>
+				<executions>
+					<execution>
+						<id>add-source</id>
+						<phase>generate-sources</phase>
+						<goals>
+							<goal>add-source</goal>
+						</goals>
+						<configuration>
+							<sources>
+								<source>src-gen</source>
+							</sources>
+						</configuration>
+					</execution>
+				</executions>
 			</plugin>
-
-			
 		</plugins>
 	</build>
 </project>
