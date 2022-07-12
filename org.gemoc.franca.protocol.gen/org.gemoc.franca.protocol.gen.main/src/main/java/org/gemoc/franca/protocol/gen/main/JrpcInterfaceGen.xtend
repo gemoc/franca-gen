@@ -1,14 +1,13 @@
-package fr.inria.diverse.francaTest.gen
+package org.gemoc.franca.protocol.gen.main
 
 import org.franca.core.franca.FInterface
 
-import org.franca.deploymodel.core.FDeployedInterface
-import org.franca.deploymodel.ext.providers.FDeployedProvider
-import org.franca.deploymodel.dsl.fDeploy.FDExtensionRoot
-import fr.inria.diverse.francaTest.RPCSpec.InterfacePropertyAccessor
+
 import org.franca.core.franca.FMethod
 import org.franca.core.franca.FTypeRef
 import org.franca.core.franca.FBasicTypeId
+import org.gemoc.franca.protocol.lib.spec.RPCSpec.InterfacePropertyAccessor
+import org.franca.deploymodel.core.FDeployedInterface
 
 class JrpcInterfaceGen {
 	InterfacePropertyAccessor deploy
