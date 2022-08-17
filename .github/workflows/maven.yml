@@ -5,9 +5,9 @@ name: Maven Build
 
 on:
   push:
-    branches: [ master ]
+    branches: [ main ]
   pull_request:
-    branches: [ master ]
+    branches: [ main ]
 
 jobs:
   build:
@@ -30,7 +30,6 @@ jobs:
         restore-keys: ${{ runner.os }}-m2
         
     - name: Build with Maven
-      working-directory: sync-git-submodules-branches
       run: mvn -B package --file pom.xml
       
     - name: Stage result files
