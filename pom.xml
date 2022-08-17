@@ -1,21 +1,63 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-  <modelVersion>4.0.0</modelVersion>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
 
-  <groupId>org.gemoc.franca.protocol</groupId>
-  <artifactId>org.gemoc.franca.protocol.parent</artifactId>
-  <version>0.0.1-SNAPSHOT</version>
-  <packaging>pom</packaging>
+	<groupId>org.gemoc.franca.protocol</groupId>
+	<artifactId>org.gemoc.franca.protocol.parent</artifactId>
+	<version>0.0.1-SNAPSHOT</version>
+	<packaging>pom</packaging>
 
-  <name>org.gemoc.franca.protocol.parent</name>
-  <url>https://gemoc.org/</url>
+	<name>org.gemoc.franca.protocol.parent</name>
+	<url>https://gemoc.org/</url>
 
-  <properties>
-    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-  </properties>
-  
-  <modules>
-	<module>org.gemoc.franca.protocol.releng</module>
-    <module>org.gemoc.franca.protocol.lib</module>
-  </modules>
+	<properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<java.version>11</java.version>
+		<maven.compiler.target>11</maven.compiler.target>
+		<maven.compiler.source>11</maven.compiler.source>
+		<franca.version>0.13.1</franca.version>
+		<xtext.version>2.14.0</xtext.version>
+		<junit.version>4.13.1</junit.version>
+
+
+	</properties>
+
+	<modules>
+		<module>examples/org.gemoc.franca.examples.eaop.wsjsonrpc.protocol</module>
+		<module>org.gemoc.franca.protocol.lib</module>
+	</modules>
+
+	<dependencyManagement>
+		<dependencies>
+			<dependency>
+				<groupId>org.franca</groupId>
+				<artifactId>org.franca.core</artifactId>
+				<version>${franca.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.franca</groupId>
+				<artifactId>org.franca.deploymodel.dsl</artifactId>
+				<version>${franca.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.eclipse.xtext</groupId>
+				<artifactId>org.eclipse.xtext</artifactId>
+				<version>${xtext.version}</version>
+			</dependency>
+		</dependencies>
+	</dependencyManagement>
+	<build>
+		<pluginManagement>
+			<plugins>
+				<plugin>
+					<groupId>org.codehaus.mojo</groupId>
+					<artifactId>build-helper-maven-plugin</artifactId>
+					<version>3.2.0</version>
+				</plugin>
+				<plugin>
+					<artifactId>maven-resources-plugin</artifactId>
+					<version>3.0.2</version>
+				</plugin>
+			</plugins>
+		</pluginManagement>
+	</build>
 </project>
