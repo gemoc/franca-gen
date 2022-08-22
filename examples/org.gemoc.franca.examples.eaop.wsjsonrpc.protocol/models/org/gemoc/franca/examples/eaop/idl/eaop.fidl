@@ -1,0 +1,77 @@
+package org.gemoc.franca.examples.eaop
+
+
+typeCollection dto {
+	
+	struct ExecutionEngine {
+		String engineKindName
+		String engineName
+	}
+	struct Step  {
+		MSEOccurence mseOccurence
+		String startingStateID
+		String endingStateID
+	}
+	struct MSEOccurence  {
+		MSE mse
+		String parameters
+		String result
+	}
+	struct MSE  {
+		String callerEObjectURI
+		String actionID
+	}
+}
+
+interface EngineAddonProtocolClient {
+	version { major 0 minor 0	}
+	method engineAboutToStart {
+		in {
+			dto.ExecutionEngine engine
+		}
+		out {
+		}
+	} 
+	method engineStarted {
+		in {
+			dto.ExecutionEngine engine
+		}
+	}
+}
+
+interface EngineAddonProtocolServer {
+	method initialization {}
+	method getState {
+	}
+	method getStep {
+	}
+	
+	broadcast engineAboutToStart selective {
+		out { dto.ExecutionEngine engine }
+	}
+}
+
+interface EngineAddonProtocol manages EngineAddonProtocolClient, EngineAddonProtocolServer {
+	
+}
+
+/*
+ * class EngineAddonProtocolServer {
+	@JsonRequest| {
+		State state
+	} getState(GetStateArguments arguments)
+	@JsonRequest| {
+		Step state
+	} getStep(GetStepArguments arguments)
+}
+class EngineAddonProtocolClient {
+	@JsonNotification| void engineAboutToStart(EngineAboutToStartEventArguments args)
+	@JsonNotification| void engineStarted(EngineStartedEventArguments args)
+	@JsonNotification| void engineInitialized(EngineInitializedEventArguments args)
+	@JsonNotification| void engineAboutToStop(EngineAboutToStopEventArguments args)
+	@JsonNotification| void engineStopped(EngineStoppedEventArguments args)
+	@JsonNotification| void engineAboutToDispose(EngineAboutToDisposeEventArguments args)
+	@JsonNotification| void aboutToExecuteStep(AboutToExecuteStepEventArguments args)
+	@JsonNotification| void stepExecuted(StepExecutedEventArguments args)
+}
+ */
