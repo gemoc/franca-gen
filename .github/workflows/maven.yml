@@ -35,6 +35,12 @@ jobs:
     - name: Integration tests
       run: mvn -B verify --file org.gemoc.franca.protocol.gen.plugin.it.test/pom.xml  
     
+    - name: Publish Test Results
+      uses: EnricoMi/publish-unit-test-result-action/composite@v1
+      if: always()  # always run even if the previous step fails
+      with:
+        files: "**/target/surefire-reports/TEST-*.xml"
+    
     - name: Stage result files
       run: mkdir staging && cp */target/*.jar staging && cp examples/*/target/*.jar staging 
     - name: Upload Artifacts
