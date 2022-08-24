@@ -31,8 +31,8 @@ class ProtocolGenerator4Java extends AbstractProtocolGenerator {
 		
 		val List<FType> fTypes = rs.allContents.filter(FType).toList
 		fTypes.forEach[ ft |
-			val content =  typeDtoJavaGen.generateFileContentString(ft)
 			logger.info('''Generating «typeDtoJavaGen.getFileName(ft)»...''')
+			val content =  typeDtoJavaGen.generateFileContentString(ft)
 			logger.debug(typeDtoJavaGen.generateFileContentString(ft))
 			typeDtoJavaGen.serializeFile(ft, content)
 		]
@@ -48,7 +48,9 @@ class ProtocolGenerator4Java extends AbstractProtocolGenerator {
 			var FDeployedInterface deployedInterface = new FDeployedInterface(fdInterface)
 			
 			logger.info('''Generating «fdiJavaGen.getFileName(deployedInterface)»...''')
-			//System.out.println(FrancaHelper.simpleContentString(deployedInterface.getFInterface()))
+			val content =  fdiJavaGen.generateFileContentString(deployedInterface)
+			logger.debug(fdiJavaGen.generateFileContentString(deployedInterface))
+			fdiJavaGen.serializeFile(deployedInterface, content)
 		} 
 	}
 

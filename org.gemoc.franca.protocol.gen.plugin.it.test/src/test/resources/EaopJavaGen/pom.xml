@@ -1,0 +1,71 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+
+	<groupId>org.gemoc.franca.protocol.gen.plugin.its.eaopjavagen</groupId>
+	<artifactId>eaopjavagen</artifactId>
+	<version>1.0</version>
+	<packaging>jar</packaging>
+	<properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<java.version>11</java.version>
+		<maven.compiler.target>11</maven.compiler.target>
+		<maven.compiler.source>11</maven.compiler.source>
+	</properties>
+
+	<dependencies>
+
+
+		<dependency>
+			<groupId>org.gemoc.franca.protocol</groupId>
+			<artifactId>org.gemoc.franca.protocol.lib</artifactId>
+			<version>0.0.1-SNAPSHOT</version>
+		</dependency>
+	</dependencies>
+	<build>
+		<resources>
+			<resource>
+				<directory>models</directory>
+			</resource>
+		</resources>
+		<plugins>
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>build-helper-maven-plugin</artifactId>
+				<version>3.2.0</version>
+				<executions>
+					<execution>
+						<id>add-source</id>
+						<phase>generate-sources</phase>
+						<goals>
+							<goal>add-source</goal>
+						</goals>
+						<configuration>
+							<sources>
+								<source>${project.build.directory}/src-gen</source>
+							</sources>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+				<groupId>org.gemoc.franca.protocol.gen</groupId>
+				<artifactId>org.gemoc.franca.protocol.gen.plugin</artifactId>
+				<version>0.0.1-SNAPSHOT</version>
+				<configuration>
+					<generator>java</generator>
+					<!--<fdeplFile>../../../../../examples/org.gemoc.franca.examples.eaop.wsjsonrpc.protocol/models/org/gemoc/franca/examples/eaop/wsjsonrpc/deploy/eaopDeploy.fdepl</fdeplFile>-->
+					<outputDirectory>${project.build.directory}/src-gen</outputDirectory>
+				</configuration>
+				<executions>
+					<execution>
+						<id>generate-protocol</id>
+						<phase>generate-sources</phase>
+						<goals>
+							<goal>generate</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+		</plugins>
+	</build>
+</project>

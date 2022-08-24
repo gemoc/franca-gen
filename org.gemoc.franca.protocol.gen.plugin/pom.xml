@@ -3,7 +3,7 @@
 
 	<groupId>org.gemoc.franca.protocol.gen</groupId>
 	<artifactId>org.gemoc.franca.protocol.gen.plugin</artifactId>
-	<packaging>jar</packaging>
+	<packaging>maven-plugin</packaging>
 	<parent>
 		<groupId>org.gemoc.franca.protocol</groupId>
 		<artifactId>org.gemoc.franca.protocol.parent</artifactId>
@@ -25,7 +25,7 @@
 			<artifactId>org.gemoc.franca.protocol.gen</artifactId>
 			<version>${project.version}</version>
 		</dependency>
-		
+
 		<dependency>
 			<groupId>org.apache.maven</groupId>
 			<artifactId>maven-core</artifactId>
@@ -44,13 +44,45 @@
 			<artifactId>plexus-utils</artifactId>
 		</dependency>
 
-		
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<scope>test</scope>
+		</dependency>
 
 	</dependencies>
 
 
 	<build>
 		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-plugin-plugin</artifactId>
+				<configuration>
+					<!--<goalPrefix>sync-git-submodules-branches</goalPrefix>-->
+					<skipErrorNoDescriptorsFound>true</skipErrorNoDescriptorsFound>
+				</configuration>
+				<executions>
+					<execution>
+						<id>mojo-descriptor</id>
+						<goals>
+							<goal>descriptor</goal>
+						</goals>
+					</execution>
+					<!--<execution>
+						<id>default-descriptor</id>
+						<phase>generate-sources</phase>
+					</execution>-->
+					<!-- if you want to generate help goal -->
+					<execution>
+						<id>help-goal</id>
+						<goals>
+							<goal>helpmojo</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+
 			<plugin>
 				<!--  force build order in generate-sources phase -->
 				<groupId>org.eclipse.xtend</groupId>

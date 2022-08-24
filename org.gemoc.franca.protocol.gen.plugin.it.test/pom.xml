@@ -2,7 +2,8 @@
 	<modelVersion>4.0.0</modelVersion>
 
 	<groupId>org.gemoc.franca.protocol.gen</groupId>
-	<artifactId>org.gemoc.franca.protocol.gen.cli</artifactId>
+	<artifactId>org.gemoc.franca.protocol.gen.plugin.it.test</artifactId>
+		
 	<packaging>jar</packaging>
 	<parent>
 		<groupId>org.gemoc.franca.protocol</groupId>
@@ -10,19 +11,17 @@
 		<version>0.0.1-SNAPSHOT</version>
 	</parent>
 
-	<properties>
-	</properties>
+
 	<dependencies>
 		<dependency>
-		
-			<groupId>${project.groupId}</groupId>
-			<artifactId>org.gemoc.franca.protocol.gen</artifactId>
-			<version>${project.version}</version>
+			<groupId>org.apache.maven.shared</groupId>
+			<artifactId>maven-verifier</artifactId>
+			<version>1.8.0</version>
 		</dependency>
-		
 		<dependency>
-			<groupId>org.slf4j</groupId>
-			<artifactId>slf4j-simple</artifactId>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<scope>test</scope>
 		</dependency>
 
 	</dependencies>
