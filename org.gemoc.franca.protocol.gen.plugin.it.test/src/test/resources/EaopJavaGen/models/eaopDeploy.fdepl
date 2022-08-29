@@ -10,14 +10,12 @@ define org.gemoc.franca.protocol.lib.spec.WsJsonRpcSpec for interface org.gemoc.
 	Opposite = & org.gemoc.franca.examples.eaop.EngineAddonProtocolServer
 	IsClient = true
 	method engineAboutToStart {
-		CallSemantics = synchronous
+		CallType = notification
 		IsOptional = false
-		IsNotification =  true
 	}
 	method engineStarted {
-		CallSemantics = synchronous
+		CallType = notification
 		IsOptional = false
-		IsNotification =  true
 	}
 	
 }
@@ -26,9 +24,18 @@ define org.gemoc.franca.protocol.lib.spec.WsJsonRpcSpec for interface org.gemoc.
 	Opposite = & org.gemoc.franca.examples.eaop.EngineAddonProtocolClient
 	IsClient = false
 	method initialization {
-		CallSemantics = synchronous
+		CallType = request
 		IsOptional = false
-		IsNotification =  true
+	}
+	
+	method getState {
+		CallType = request
+		IsOptional = false
+	}
+	
+	method getStep {
+		CallType = request
+		IsOptional = false
 	}
 	
 }

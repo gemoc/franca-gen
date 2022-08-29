@@ -40,8 +40,8 @@ public class RPCSpec {
 	 */
 	public interface Enums
 	{
-		public enum CallSemantics {
-			synchronous, asynchronous
+		public enum CallType {
+			notification, request
 		}
 		 
 	}
@@ -102,11 +102,11 @@ public class RPCSpec {
 			this.owner = owner;
 		}
 	
-		public static CallSemantics convertCallSemantics(String val) {
-			if (val.equals("synchronous"))
-				return CallSemantics.synchronous; else 
-			if (val.equals("asynchronous"))
-				return CallSemantics.asynchronous;
+		public static CallType convertCallType(String val) {
+			if (val.equals("notification"))
+				return CallType.notification; else 
+			if (val.equals("request"))
+				return CallType.request;
 			return null;
 		}
 		
@@ -162,16 +162,13 @@ public class RPCSpec {
 		}
 		
 		// host 'methods'
-		public CallSemantics getCallSemantics(FMethod obj) {
-			String e = target.getEnum(obj, "CallSemantics");
+		public CallType getCallType(FMethod obj) {
+			String e = target.getEnum(obj, "CallType");
 			if (e==null) return null;
-			return DataPropertyAccessorHelper.convertCallSemantics(e);
+			return DataPropertyAccessorHelper.convertCallType(e);
 		}
 		public Boolean getIsOptional(FMethod obj) {
 			return target.getBoolean(obj, "IsOptional");
-		}
-		public Boolean getIsNotification(FMethod obj) {
-			return target.getBoolean(obj, "IsNotification");
 		}
 			
 		// host 'interfaces'

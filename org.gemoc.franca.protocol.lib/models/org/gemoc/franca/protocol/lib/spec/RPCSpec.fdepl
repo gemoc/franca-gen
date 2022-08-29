@@ -2,9 +2,8 @@ package org.gemoc.franca.protocol.lib.spec
 
 specification RPCSpec {
 	for methods {
-		CallSemantics: {synchronous, asynchronous} (default: asynchronous);
+		CallType: {notification, request} (default: request);
 		IsOptional: Boolean (default: true);
-		IsNotification : Boolean (default: true);
 	}
 	for interfaces {
 		Opposite: Interface;

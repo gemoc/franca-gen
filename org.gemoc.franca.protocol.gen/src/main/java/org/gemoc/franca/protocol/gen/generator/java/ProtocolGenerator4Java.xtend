@@ -42,11 +42,11 @@ class ProtocolGenerator4Java extends AbstractProtocolGenerator {
 		// get interfaces referenced by FDeploy model
 		var FDModelExtender fdmodelExt = new FDModelExtender(fdmodel)
 		var List<FDInterface> interfaces = fdmodelExt.getFDInterfaces()
-		val FDeployedInterfaceJavaGen fdiJavaGen = new FDeployedInterfaceJavaGen(outputFolder)
+		
 		for (FDInterface fdInterface : interfaces) {
 			
 			var FDeployedInterface deployedInterface = new FDeployedInterface(fdInterface)
-			
+			val FDeployedInterfaceJavaGen fdiJavaGen = new FDeployedInterfaceJavaGen(outputFolder)	
 			logger.info('''Generating «fdiJavaGen.getFileName(deployedInterface)»...''')
 			val content =  fdiJavaGen.generateFileContentString(deployedInterface)
 			logger.debug(fdiJavaGen.generateFileContentString(deployedInterface))
