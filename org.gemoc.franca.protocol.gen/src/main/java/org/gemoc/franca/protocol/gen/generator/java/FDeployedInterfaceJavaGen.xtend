@@ -28,8 +28,8 @@ class FDeployedInterfaceJavaGen extends AbstractJavaFileGenerator<FDeployedInter
 	}
 	
 	override String generateFileContentString(){
-		val s = generateString(baseModelElement)
-		'''package «getPackageName(baseModelElement)»;
+		val s = generateString()
+		'''package «getPackageName()»;
 «FOR element : this.importString»
 import «element»;
 «ENDFOR»
@@ -38,35 +38,45 @@ import «element»;
 	}
 	
 	override String getFileName(){
-		val fileName = '''«baseFileName»/«getPackageName(baseModelElement).replaceAll("\\.","/")»/I«baseModelElement.FInterface.name.toFirstUpper.replaceAll("\\.","/")».java''' 
+		val fileName = '''«baseFileName»/«getPackageName().replaceAll("\\.","/")»/I«baseModelElement.FInterface.name.toFirstUpper.replaceAll("\\.","/")».java''' 
 		fileName
 	}
 	
-	def String getPackageName(FDeployedInterface fdi) {
+	def String getPackageName() {
 		//fdi.
-		val fd = fdi.getFDElement(fdi.FInterface)
+		val fd = baseModelElement.getFDElement(baseModelElement.FInterface)
 		'''«fd.getContainerOfType(FDModel).name.toLowerCase»'''
 	}
 	
-	private def String generateString(FDeployedInterface fdi) {
+	private def String generateString() {
 		
-		'''public interface I«fdi.FInterface.name.toFirstUpper» {
-	«FOR method : fdi.FInterface.methods»
-		«generateMethodString(method, fdi)»	
+		'''public interface I«baseModelElement.FInterface.name.toFirstUpper» {
+	«FOR method : baseModelElement.FInterface.methods»
+		«generateMethodString(method)»	
 	«ENDFOR»
 }'''
 	}
 	
 	
-	private def String generateMethodString(FMethod method, FDeployedInterface fdi) {
-		if(ipAccessor.getCallType(method).equals(CallType.notification)) {
-			addImport("org.eclipse.lsp4j.jsonrpc.services.JsonNotification")
-		}
-		'''«IF ipAccessor.getCallType(method).equals(CallType.notification)»
-@JsonNotification			
-«ENDIF»default void «method.name»(){
+	private def String generateMethodString(FMethod method) {
+		
+		'''«generateMethodAnnotationString(method)»			
+default void «method.name»(){
 	throw new UnsupportedOperationException();
 }'''		
+	}
+	
+	private def String generateMethodAnnotationString(FMethod method) {
+		switch (ipAccessor.getCallType(method)) {
+			case CallType.notification: {
+				addImport("org.eclipse.lsp4j.jsonrpc.services.JsonNotification")
+				'''@JsonNotification'''
+			}
+			default: {
+				addImport("org.eclipse.lsp4j.jsonrpc.services.JsonRequest")
+				'''@JsonRequest'''
+			}
+		}
 	}
 	
 
