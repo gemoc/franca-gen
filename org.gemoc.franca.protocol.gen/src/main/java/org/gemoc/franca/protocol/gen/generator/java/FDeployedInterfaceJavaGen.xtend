@@ -16,11 +16,11 @@ import org.franca.core.franca.FMethod
 import org.gemoc.franca.protocol.lib.spec.RPCSpec
 import org.gemoc.franca.protocol.lib.spec.RPCSpec.Enums.CallType
 
-class FDeployedInterfaceJavaGen extends AbstractFileGenerator<FDeployedInterface>{
+class FDeployedInterfaceJavaGen extends AbstractJavaFileGenerator<FDeployedInterface>{
 	
 	RPCSpec.InterfacePropertyAccessor ipAccessor
 	
-	HashMap<FDeployedInterface, HashSet<String>> importStringMap = newHashMap
+	//HashMap<FDeployedInterface, HashSet<String>> importStringMap = newHashMap
 	
 	new(String baseFileName, FDeployedInterface fdi){
 		super(baseFileName, fdi)
@@ -28,13 +28,9 @@ class FDeployedInterfaceJavaGen extends AbstractFileGenerator<FDeployedInterface
 	}
 	
 	override String generateFileContentString(){
-		var importList = importStringMap.get(baseModelElement)
-		if (importList === null) {
-			importStringMap.put(baseModelElement, newHashSet)
-		}
 		val s = generateString(baseModelElement)
 		'''package «getPackageName(baseModelElement)»;
-«FOR element : importStringMap.get(baseModelElement)»
+«FOR element : this.importString»
 import «element»;
 «ENDFOR»
 «s»
@@ -64,7 +60,7 @@ import «element»;
 	
 	private def String generateMethodString(FMethod method, FDeployedInterface fdi) {
 		if(ipAccessor.getCallType(method).equals(CallType.notification)) {
-			addImport(fdi, "org.eclipse.lsp4j.jsonrpc.services.JsonNotification")
+			addImport("org.eclipse.lsp4j.jsonrpc.services.JsonNotification")
 		}
 		'''«IF ipAccessor.getCallType(method).equals(CallType.notification)»
 @JsonNotification			
@@ -73,14 +69,6 @@ import «element»;
 }'''		
 	}
 	
-	
-	protected def addImport(FDeployedInterface ftype, String importString) {
-		var importList = importStringMap.get(ftype)
-		if (importList === null) {
-			importStringMap.put(ftype, newHashSet)
-			importList = importStringMap.get(ftype)
-		}
-		importList.add(importString)
-	}
+
 	
 }
