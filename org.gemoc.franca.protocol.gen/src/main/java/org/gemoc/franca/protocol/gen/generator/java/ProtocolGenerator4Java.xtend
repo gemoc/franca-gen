@@ -24,17 +24,17 @@ class ProtocolGenerator4Java extends AbstractProtocolGenerator {
 
 	override void generate() {
 		// generate types DTO
-		val FTypeDtoJavaGen typeDtoJavaGen = new FTypeDtoJavaGen(outputFolder)
 		var ResourceSet rs = this.fdmodel.eResource().getResourceSet()
 		
 		logger.info('''Generating Deployed API «this.fdmodel.getName()»''')
 		
 		val List<FType> fTypes = rs.allContents.filter(FType).toList
 		fTypes.forEach[ ft |
-			logger.info('''Generating «typeDtoJavaGen.getFileName(ft)»...''')
-			val content =  typeDtoJavaGen.generateFileContentString(ft)
-			logger.debug(typeDtoJavaGen.generateFileContentString(ft))
-			typeDtoJavaGen.serializeFile(ft, content)
+			val FTypeDtoJavaGen typeDtoJavaGen = new FTypeDtoJavaGen(outputFolder, ft)
+			logger.info('''Generating «typeDtoJavaGen.getFileName()»...''')
+			val content =  typeDtoJavaGen.generateFileContentString()
+			logger.debug(typeDtoJavaGen.generateFileContentString())
+			typeDtoJavaGen.serializeFile(content)
 		]
 		
 		// generate Deployed Interfaces
@@ -46,11 +46,11 @@ class ProtocolGenerator4Java extends AbstractProtocolGenerator {
 		for (FDInterface fdInterface : interfaces) {
 			
 			var FDeployedInterface deployedInterface = new FDeployedInterface(fdInterface)
-			val FDeployedInterfaceJavaGen fdiJavaGen = new FDeployedInterfaceJavaGen(outputFolder)	
-			logger.info('''Generating «fdiJavaGen.getFileName(deployedInterface)»...''')
-			val content =  fdiJavaGen.generateFileContentString(deployedInterface)
-			logger.debug(fdiJavaGen.generateFileContentString(deployedInterface))
-			fdiJavaGen.serializeFile(deployedInterface, content)
+			val FDeployedInterfaceJavaGen fdiJavaGen = new FDeployedInterfaceJavaGen(outputFolder, deployedInterface)	
+			logger.info('''Generating «fdiJavaGen.getFileName()»...''')
+			val content =  fdiJavaGen.generateFileContentString()
+			logger.debug(fdiJavaGen.generateFileContentString())
+			fdiJavaGen.serializeFile(content)
 		} 
 	}
 

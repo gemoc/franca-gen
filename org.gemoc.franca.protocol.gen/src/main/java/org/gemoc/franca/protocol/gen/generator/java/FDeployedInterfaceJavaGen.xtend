@@ -18,28 +18,31 @@ import org.gemoc.franca.protocol.lib.spec.RPCSpec.Enums.CallType
 
 class FDeployedInterfaceJavaGen extends AbstractFileGenerator<FDeployedInterface>{
 	
+	RPCSpec.InterfacePropertyAccessor ipAccessor
+	
 	HashMap<FDeployedInterface, HashSet<String>> importStringMap = newHashMap
 	
-	new(String baseFileName){
-		super(baseFileName)
+	new(String baseFileName, FDeployedInterface fdi){
+		super(baseFileName, fdi)
+		ipAccessor = new RPCSpec.InterfacePropertyAccessor(fdi);
 	}
 	
-	override String generateFileContentString(FDeployedInterface fdi){
-		var importList = importStringMap.get(fdi)
+	override String generateFileContentString(){
+		var importList = importStringMap.get(baseModelElement)
 		if (importList === null) {
-			importStringMap.put(fdi, newHashSet)
+			importStringMap.put(baseModelElement, newHashSet)
 		}
-		val s = generateString(fdi)
-		'''package «getPackageName(fdi)»;
-«FOR element : importStringMap.get(fdi)»
+		val s = generateString(baseModelElement)
+		'''package «getPackageName(baseModelElement)»;
+«FOR element : importStringMap.get(baseModelElement)»
 import «element»;
 «ENDFOR»
 «s»
 '''
 	}
 	
-	override String getFileName(FDeployedInterface fdi){
-		val fileName = '''«baseFileName»/«getPackageName(fdi).replaceAll("\\.","/")»/I«fdi.FInterface.name.toFirstUpper.replaceAll("\\.","/")».java''' 
+	override String getFileName(){
+		val fileName = '''«baseFileName»/«getPackageName(baseModelElement).replaceAll("\\.","/")»/I«baseModelElement.FInterface.name.toFirstUpper.replaceAll("\\.","/")».java''' 
 		fileName
 	}
 	
@@ -60,16 +63,16 @@ import «element»;
 	
 	
 	private def String generateMethodString(FMethod method, FDeployedInterface fdi) {
-		var RPCSpec.InterfacePropertyAccessor ia = new RPCSpec.InterfacePropertyAccessor(fdi);
-		if(ia.getCallType(method).equals(CallType.notification)) {
+		if(ipAccessor.getCallType(method).equals(CallType.notification)) {
 			addImport(fdi, "org.eclipse.lsp4j.jsonrpc.services.JsonNotification")
 		}
-		'''«IF ia.getCallType(method).equals(CallType.notification)»
+		'''«IF ipAccessor.getCallType(method).equals(CallType.notification)»
 @JsonNotification			
 «ENDIF»default void «method.name»(){
 	throw new UnsupportedOperationException();
 }'''		
 	}
+	
 	
 	protected def addImport(FDeployedInterface ftype, String importString) {
 		var importList = importStringMap.get(ftype)

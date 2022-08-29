@@ -29,32 +29,32 @@ class FTypeDtoJavaGen extends AbstractFileGenerator<FType> {
 
 	HashMap<FType, HashSet<String>> importStringMap = newHashMap
 
-	new(String baseFileName) {
-		super(baseFileName)
+	new(String baseFileName, FType ftype) {
+		super(baseFileName, ftype)
 	}
 
-	new(String baseFileName, String packageName) {
-		super(baseFileName)
+	new(String baseFileName, String packageName, FType ftype) {
+		super(baseFileName, ftype)
 		this.packageNameStrategy = PackageNameStrategy.fixed
 		this.fixedPackageName = packageName
 	}
 
-	override String generateFileContentString(FType ftype) {
-		var importList = importStringMap.get(ftype)
+	override String generateFileContentString() {
+		var importList = importStringMap.get(baseModelElement)
 		if (importList === null) {
-			importStringMap.put(ftype, newHashSet)
+			importStringMap.put(baseModelElement, newHashSet)
 		}
-		val s = generateString(ftype)
-		'''package «getPackageName(ftype)»;
-«FOR element : importStringMap.get(ftype)»
+		val s = generateString(baseModelElement)
+		'''package «getPackageName(baseModelElement)»;
+«FOR element : importStringMap.get(baseModelElement)»
 import «element»;
 «ENDFOR»
 «s»
 '''
 	}
 
-	override String getFileName(FType type) {
-		val fileName = '''«baseFileName»/«getPackageName(type).replaceAll("\\.","/")»/«type.name.toFirstUpper».java'''
+	override String getFileName() {
+		val fileName = '''«baseFileName»/«getPackageName(baseModelElement).replaceAll("\\.","/")»/«baseModelElement.name.toFirstUpper».java'''
 		fileName
 	}
 
