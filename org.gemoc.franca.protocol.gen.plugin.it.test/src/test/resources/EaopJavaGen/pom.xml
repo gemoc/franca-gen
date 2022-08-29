@@ -10,6 +10,7 @@
 		<java.version>11</java.version>
 		<maven.compiler.target>11</maven.compiler.target>
 		<maven.compiler.source>11</maven.compiler.source>
+		<lsp4j.version>0.15.0</lsp4j.version>
 	</properties>
 
 	<dependencies>
@@ -19,6 +20,16 @@
 			<groupId>org.gemoc.franca.protocol</groupId>
 			<artifactId>org.gemoc.franca.protocol.lib</artifactId>
 			<version>0.0.1-SNAPSHOT</version>
+		</dependency>
+		<dependency>
+		    <groupId>org.eclipse.lsp4j</groupId>
+		    <artifactId>org.eclipse.lsp4j.jsonrpc</artifactId>
+    		<version>${lsp4j.version}</version>
+		</dependency>
+		<dependency>
+    		<groupId>org.eclipse.lsp4j</groupId>
+    		<artifactId>org.eclipse.lsp4j.generator</artifactId>
+    		<version>${lsp4j.version}</version>
 		</dependency>
 	</dependencies>
 	<build>

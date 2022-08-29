@@ -63,13 +63,17 @@ import «element»;
 	}
 
 	private def dispatch String generateString(FCompoundType fstructype) {
-		'''class «fstructype.name» {
+		addImport(fstructype, "org.eclipse.lsp4j.generator.JsonRpcData")
+		'''@JsonRpcData
+class «fstructype.name» {
 	// «fstructype.class»	
 }'''
 	}
 
 	private def dispatch String generateString(FStructType fstructype) {
-		'''class «fstructype.name» «IF fstructype.base !== null» extends «fstructype.base.name»«ENDIF»{
+		addImport(fstructype, "org.eclipse.lsp4j.generator.JsonRpcData")
+		'''@JsonRpcData
+class «fstructype.name» «IF fstructype.base !== null» extends «fstructype.base.name»«ENDIF»{
 	// «fstructype.class»	
 	«FOR field : fstructype.elements»
 	«generateFieldString(field, fstructype)»	

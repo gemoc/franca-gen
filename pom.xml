@@ -19,6 +19,7 @@
 		<emf.version>(2.10,2.12)</emf.version>
 		<xtext.version>2.27.0</xtext.version>
 		<xtend.version>2.27.0</xtend.version>
+		<lsp4j.version>0.15.0</lsp4j.version>
 		<maven.version>3.5.2</maven.version>
 		<junit.version>4.13.1</junit.version>
 	</properties>
@@ -70,6 +71,17 @@
 				<version>${xtext.version}</version>
 			</dependency>
 
+
+			<dependency>
+			    <groupId>org.eclipse.lsp4j</groupId>
+			    <artifactId>org.eclipse.lsp4j.jsonrpc</artifactId>
+			    <version>${lsp4j.version}</version>
+			</dependency>
+			<dependency>
+			    <groupId>org.eclipse.lsp4j</groupId>
+			    <artifactId>org.eclipse.lsp4j.generator</artifactId>
+			    <version>${lsp4j.version}</version>
+			</dependency>
 			<dependency>
 				<groupId>com.google.inject</groupId>
 				<artifactId>guice</artifactId>
