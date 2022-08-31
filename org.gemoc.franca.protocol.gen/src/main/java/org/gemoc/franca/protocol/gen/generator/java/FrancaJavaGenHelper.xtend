@@ -16,9 +16,9 @@ class FrancaJavaGenHelper {
 	
 	static def String generateTypedElementString(FTypedElement typedElement, HashMap<EObject, AbstractJavaFileGenerator<?>> generatedFileMap, HashSet<String> importString) {
 		if (typedElement.array) {
-			importString.add("java.util.List")
+			//importString.add("java.util.List")
 			'''«generateComment(typedElement.comment)»
-List<«FrancaJavaGenHelper.generateTypeRefString(typedElement.type, generatedFileMap, importString)»> «typedElement.name»;'''
+«FrancaJavaGenHelper.generateTypeRefString(typedElement.type, generatedFileMap, importString)»[] «typedElement.name»;'''
 		} else {
 			'''«generateComment(typedElement.comment)»
 «FrancaJavaGenHelper.generateTypeRefString(typedElement.type, generatedFileMap, importString)» «typedElement.name»;'''
