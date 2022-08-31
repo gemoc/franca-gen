@@ -1,5 +1,7 @@
 package org.gemoc.franca.protocol.gen.generator.java
 
+import java.util.HashMap
+import org.eclipse.emf.ecore.EObject
 import org.franca.core.franca.FCompoundType
 import org.franca.core.franca.FField
 import org.franca.core.franca.FModel
@@ -25,30 +27,35 @@ class FTypeDtoJavaGen extends AbstractJavaFileGenerator<FType> {
 	public String fixedPackageName = ""
 
 	
-	new(String baseFileName, FType ftype) {
-		super(baseFileName, ftype)
+	new(String baseFileName, FType ftype, HashMap<EObject, AbstractJavaFileGenerator<?>> generatedFileMap) {
+		super(baseFileName, ftype, generatedFileMap)
 	}
 
-	new(String baseFileName, String packageName, FType ftype) {
-		super(baseFileName, ftype)
+	new(String baseFileName, String packageName, FType ftype, HashMap<EObject, AbstractJavaFileGenerator<?>> generatedFileMap) {
+		super(baseFileName, ftype, generatedFileMap)
 		this.packageNameStrategy = PackageNameStrategy.fixed
 		this.fixedPackageName = packageName
 	}
 
-	override String generateFileContentString() {
+	override void generateFileContentString() {
 		
 		val s = generateString(baseModelElement)
-		'''package «getPackageName(baseModelElement)»;
+		this.fileContentString = '''package «getPackageName(baseModelElement)»;
 «FOR element : importString»
 import «element»;
 «ENDFOR»
 «s»
 '''
+		logger.debug(this.fileContentString)
 	}
 
 	override String getFileName() {
 		val fileName = '''«baseFileName»/«getPackageName(baseModelElement).replaceAll("\\.","/")»/«baseModelElement.name.toFirstUpper».java'''
 		fileName
+	}
+	
+	override String getJavaFullName() {
+		'''«getPackageName(baseModelElement)».«baseModelElement.name.toFirstUpper»'''		
 	}
 
 	private def dispatch String generateString(FType ftype) {
@@ -58,7 +65,7 @@ import «element»;
 	private def dispatch String generateString(FCompoundType fstructype) {
 		addImport( "org.eclipse.lsp4j.generator.JsonRpcData")
 		'''@JsonRpcData
-class «fstructype.name» {
+public class «fstructype.name» {
 	// «fstructype.class»	
 }'''
 	}

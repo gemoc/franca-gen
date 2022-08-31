@@ -8,7 +8,6 @@ import org.franca.core.franca.FTypeRef
 import org.franca.core.franca.FBasicTypeId
 import org.gemoc.franca.protocol.lib.spec.RPCSpec.InterfacePropertyAccessor
 import org.franca.deploymodel.core.FDeployedInterface
-import org.gemoc.franca.protocol.lib.spec.RPCSpec.Enums.CallType
 
 class JrpcInterfaceGen {
 	InterfacePropertyAccessor deploy
@@ -53,7 +52,7 @@ class JrpcInterfaceGen {
 	'''
 	
 	def private generateMethodDeclaration(FMethod method)'''
-		«deploy.getCallType(method).equals(CallType.notification)?"@JsonNotification":"@JsonRequest"»
+		«method.isFireAndForget?"@JsonNotification":"@JsonRequest"»
 		default «method.outArgs.isNullOrEmpty?"void":method.outArgs.get(0)?.type.generate» CompletableFuture<«FOR attr : method.inArgs»«attr.type.generate» «attr.name»«ENDFOR»>
 		
 	'''

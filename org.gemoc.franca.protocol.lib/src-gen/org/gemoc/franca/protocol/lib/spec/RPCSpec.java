@@ -40,8 +40,8 @@ public class RPCSpec {
 	 */
 	public interface Enums
 	{
-		public enum CallType {
-			notification, request
+		public enum ArgsType {
+			dedicatedClass, optimized
 		}
 		 
 	}
@@ -102,11 +102,11 @@ public class RPCSpec {
 			this.owner = owner;
 		}
 	
-		public static CallType convertCallType(String val) {
-			if (val.equals("notification"))
-				return CallType.notification; else 
-			if (val.equals("request"))
-				return CallType.request;
+		public static ArgsType convertArgsType(String val) {
+			if (val.equals("dedicatedClass"))
+				return ArgsType.dedicatedClass; else 
+			if (val.equals("optimized"))
+				return ArgsType.optimized;
 			return null;
 		}
 		
@@ -162,13 +162,13 @@ public class RPCSpec {
 		}
 		
 		// host 'methods'
-		public CallType getCallType(FMethod obj) {
-			String e = target.getEnum(obj, "CallType");
-			if (e==null) return null;
-			return DataPropertyAccessorHelper.convertCallType(e);
-		}
 		public Boolean getIsOptional(FMethod obj) {
 			return target.getBoolean(obj, "IsOptional");
+		}
+		public ArgsType getArgsType(FMethod obj) {
+			String e = target.getEnum(obj, "ArgsType");
+			if (e==null) return null;
+			return DataPropertyAccessorHelper.convertArgsType(e);
 		}
 			
 		// host 'interfaces'

@@ -13,13 +13,14 @@ abstract class AbstractFileGenerator<T> {
 		this.baseModelElement = baseModelElement
 	}
 	
-	def abstract String generateFileContentString()
+	public String fileContentString = ""
+	def abstract void generateFileContentString()
 
 	def String getFileName()
 
-	def void serializeFile( String generatedtring){
+	def void serializeFile( ){
 		val fileName = getFileName() 
 		FileUtils.getFile(fileName)
-		FileUtils.writeStringToFile(FileUtils.getFile(fileName), generatedtring, "UTF-8")
+		FileUtils.writeStringToFile(FileUtils.getFile(fileName), fileContentString, "UTF-8")
 	}
 }

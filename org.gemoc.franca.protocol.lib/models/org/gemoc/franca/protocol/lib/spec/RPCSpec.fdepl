@@ -2,8 +2,12 @@ package org.gemoc.franca.protocol.lib.spec
 
 specification RPCSpec {
 	for methods {
-		CallType: {notification, request} (default: request);
+		//CallType: {notification, request} (default: request);
 		IsOptional: Boolean (default: true);
+		
+		
+		// will be used to not generate a dedicated MethodArg class if the method use 
+		ArgsType : {dedicatedClass, optimized} (default: dedicatedClass);
 	}
 	for interfaces {
 		Opposite: Interface;

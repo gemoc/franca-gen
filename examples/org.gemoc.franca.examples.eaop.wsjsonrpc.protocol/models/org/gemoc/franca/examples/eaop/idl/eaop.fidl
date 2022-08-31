@@ -25,6 +25,9 @@ typeCollection dto {
 
 interface EngineAddonProtocolClient {
 	version { major 0 minor 0	}
+	
+	<** @description : some description
+	 **>
 	method engineAboutToStart {
 		in {
 			dto.ExecutionEngine engine
@@ -33,6 +36,12 @@ interface EngineAddonProtocolClient {
 		}
 	} 
 	method engineStarted {
+		in {
+			dto.ExecutionEngine engine
+		}
+	}
+	
+	method engineStartedNotif fireAndForget {
 		in {
 			dto.ExecutionEngine engine
 		}
@@ -46,6 +55,7 @@ interface EngineAddonProtocolServer {
 	method getStep {
 	}
 	
+	// not supported yet
 	broadcast engineAboutToStart selective {
 		out { dto.ExecutionEngine engine }
 	}
