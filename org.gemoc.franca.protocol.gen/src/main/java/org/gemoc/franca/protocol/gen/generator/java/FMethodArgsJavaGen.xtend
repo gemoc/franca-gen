@@ -55,11 +55,11 @@ import «element»;
 	}
 
 	override String getFileName() {
-		val fileName = '''«baseFileName»/«getPackageName(baseModelElement).replaceAll("\\.","/")»/«baseModelElement.name.toFirstUpper»Args.java'''
+		val fileName = '''«baseFileName»/«getPackageName(baseModelElement).replaceAll("\\.","/")»/«baseModelElement.name.toFirstUpper»Arguments.java'''
 		fileName
 	}
 	override String getJavaFullName() {
-		'''«getPackageName(baseModelElement)».«baseModelElement.name.toFirstUpper»Args'''
+		'''«getPackageName(baseModelElement)».«baseModelElement.name.toFirstUpper»Arguments'''
 		
 	}
 
@@ -79,7 +79,7 @@ import «element»;
 	private def String generateString(FMethod method){
 		addImport( "org.eclipse.lsp4j.generator.JsonRpcData")
 		'''@JsonRpcData
-		public class «method.name.toFirstUpper»Args {
+		public class «method.name.toFirstUpper»Arguments {
 			«FOR inArg : baseModelElement.inArgs»
 				«FrancaJavaGenHelper.generateTypedElementString(inArg, generatedFileMap, importString)»		
 		«	ENDFOR»

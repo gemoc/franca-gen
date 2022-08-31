@@ -122,7 +122,7 @@ default «generateMethodReturnTypeString(method)» «method.name»(«generateMet
 			case dedicatedClass: {
 				val argGenerator = this.generatedFileMap.get(method)
 				addImport('''«argGenerator.javaFullName»''')
-				'''«method.name.toFirstUpper»Args args'''
+				'''«method.name.toFirstUpper»Arguments args'''
 			}
 			case optimized: {
 				if (method.inArgs.size == 1) {
@@ -130,7 +130,7 @@ default «generateMethodReturnTypeString(method)» «method.name»(«generateMet
 				} else {
 					val argGenerator = this.generatedFileMap.get(method)
 					addImport('''«argGenerator.javaFullName»''')
-					'''«method.name.toFirstUpper»Args args'''
+					'''«method.name.toFirstUpper»Arguments args'''
 				}
 			}
 			default: {
