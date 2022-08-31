@@ -13,7 +13,7 @@ import junit.framework.TestCase;
  * Cf. https://maven.apache.org/plugin-developers/plugin-testing.html
  */
 
-public class EaopJavaGenTest extends TestCase
+public class ExternalFidlEaopJavaGenTest extends TestCase
 {
     public void testMavenPlugin()
         throws Exception
@@ -21,7 +21,7 @@ public class EaopJavaGenTest extends TestCase
         // Check in your dummy Maven project in /src/test/resources/...
         // The testdir is computed from the location of this
         // file.
-        File testDir = ResourceExtractor.simpleExtractResources( getClass(), "/eaopjavagen" );
+        File testDir = ResourceExtractor.simpleExtractResources( getClass(), "/externalfidleaopjavagen" );
  
         Verifier verifier;
  
@@ -36,7 +36,7 @@ public class EaopJavaGenTest extends TestCase
         verifier = new Verifier( testDir.getAbsolutePath() , true);
         
         System.out.println("localRepository="+verifier.getLocalRepository());
-        System.out.println("EaopJavaGenTest logFileName="+verifier.getBasedir() +"/"+verifier.getLogFileName());
+        System.out.println("ExternalFidlEaopJavaGenTest logFileName="+verifier.getBasedir() +"/"+verifier.getLogFileName());
         
         //verifier.displayStreamBuffers();
         //verifier.setLocalRepo(getName())
@@ -44,7 +44,7 @@ public class EaopJavaGenTest extends TestCase
         //verifier.deleteArtifact( "org.apache.maven.its.itsample", "parent", "1.0", "pom" );
         //verifier.deleteArtifact( "org.apache.maven.its.itsample", "checkstyle-test", "1.0", "jar" );
         //verifier.deleteArtifact( "org.apache.maven.its.itsample", "checkstyle-assembly", "1.0", "jar" );
-        verifier.deleteArtifact( "org.gemoc.franca.protocol.gen.plugin.its.eaopjavagen", "eaopjavagen", "1.0", "java" );
+        verifier.deleteArtifact( "org.gemoc.franca.protocol.gen.plugin.its.externalfidleaopjavagen", "externalfidleaopjavagen", "1.0", "java" );
  
         /*
          * The Command Line Options (CLI) are passed to the
@@ -56,6 +56,7 @@ public class EaopJavaGenTest extends TestCase
          */
         List<String> cliOptions = new ArrayList<String>();
         cliOptions.add( "-N" );
+        cliOptions.add( "-Dorg.slf4j.simpleLogger.log.org.gemoc=debug");
         verifier.setCliOptions(cliOptions);
         verifier.executeGoal( "install" );
  

@@ -181,7 +181,7 @@ public class FrancaProtocolGenMojo extends AbstractMojo
 				getLog().error("generator "+generatorKindenum.name() + " not implemented");
 				throw new MojoExecutionException(msgErr);
 			}
-			generator.generate();
+			//generator.generate();
 		} catch (java.lang.IllegalArgumentException e) {
 			System.err.println("Unknown generator "+this.generator);
 			throw new MojoExecutionException("Unknown generator "+this.generator);
