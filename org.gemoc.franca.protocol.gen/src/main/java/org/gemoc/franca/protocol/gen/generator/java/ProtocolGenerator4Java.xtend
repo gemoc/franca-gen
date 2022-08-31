@@ -33,38 +33,39 @@ class ProtocolGenerator4Java extends AbstractProtocolGenerator {
 		
 		logger.info('''Generating Deployed API «this.fdmodel.getName()»''')
 		
+		// phase 1, compute list of generated file 
 		val List<FType> fTypes = rs.allContents.filter(FType).toList
 		fTypes.forEach[ ft |
 			val FTypeDtoJavaGen typeDtoJavaGen = new FTypeDtoJavaGen(outputFolder, ft, generatedFileMap)
-			logger.info('''Generating content of «typeDtoJavaGen.getFileName()»...''')
-			typeDtoJavaGen.generateFileContentString()
 			generatedFileMap.put(ft, typeDtoJavaGen)
-			//typeDtoJavaGen.serializeFile(content)
 		]
 		
-		// generate Deployed Interfaces
-		// generate Deployed Interfaces parameters DTO
-		// get interfaces referenced by FDeploy model
 		var FDModelExtender fdmodelExt = new FDModelExtender(fdmodel)
 		var List<FDInterface> interfaces = fdmodelExt.getFDInterfaces()
 		
 		for (FDInterface fdInterface : interfaces) {
-			
-			//var FDeployedInterface deployedInterface = new FDeployedInterface(fdInterface)
 			val FDInterfaceJavaGen fdiJavaGen = new FDInterfaceJavaGen(outputFolder, fdInterface, generatedFileMap)	
-			logger.info('''Generating content of «fdiJavaGen.getFileName()»...''')
-			fdiJavaGen.generateFileContentString()
 			generatedFileMap.put(fdInterface, fdiJavaGen)
 		} 
-		for (generator : generatedFileMap.values) {
-			if(generator.fileContentString.empty) {
-				logger.info('''Generating content of «generator.getFileName()»...''')
-				generator.generateFileContentString()
+		// recursive call until no more generator are added ?
+		var addedGenerator = true
+		logger.debug('''«generatedFileMap.values.size» direct files to generated''')
+		while (addedGenerator) {
+			val nbBefore = generatedFileMap.values.size
+			for (generator : generatedFileMap.values.clone) {
+				generator.computeIndirectlyGeneratedFiles()
+			}
+			if(generatedFileMap.values.size == nbBefore) addedGenerator = false
+			else {
+				logger.debug('''Added «generatedFileMap.values.size - nbBefore» indirect files to generate''')
 			}
 		}
-		logger.info('''Serializing all files...''')
+		
+		// Phase 2, generate content and serialize
+		logger.info('''Serializing «generatedFileMap.values.size» files...''')
 		for (generator : generatedFileMap.values) {
-			logger.debug('''Serializing «generator.getFileName()»...''')
+			logger.debug('''Generating content of «generator.getFileName()»...''')
+			generator.generateFileContentString()
 			generator.serializeFile()
 		}
 		

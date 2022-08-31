@@ -49,6 +49,10 @@ import «element»;
 		logger.debug(this.fileContentString)
 	}
 
+	override void computeIndirectlyGeneratedFiles() {
+		
+	}
+
 	override String getFileName() {
 		val fileName = '''«baseFileName»/«getPackageName(baseModelElement).replaceAll("\\.","/")»/«baseModelElement.name.toFirstUpper».java'''
 		fileName

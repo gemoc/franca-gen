@@ -21,6 +21,9 @@ abstract class AbstractJavaFileGenerator<T> extends AbstractFileGenerator<T> {
 		this.importString.add(importString)
 	}
 	
+	/** The goal of this method is to make sure to create all AbstractJavaFileGenerator in generatedFileMap before calling the generate content  */
+	def void computeIndirectlyGeneratedFiles()
+	
 	def String getJavaFullName()
 	
 }

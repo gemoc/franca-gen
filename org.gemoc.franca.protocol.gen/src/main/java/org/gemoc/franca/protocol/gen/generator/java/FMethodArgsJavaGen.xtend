@@ -14,6 +14,7 @@ import org.slf4j.LoggerFactory
 
 import static extension org.eclipse.xtext.EcoreUtil2.*
 import org.franca.core.franca.FMethod
+import org.franca.core.franca.FArgument
 
 class FMethodArgsJavaGen extends AbstractJavaFileGenerator<FMethod> {
 
@@ -38,11 +39,16 @@ class FMethodArgsJavaGen extends AbstractJavaFileGenerator<FMethod> {
 		this.fixedPackageName = packageName
 	}
 
+	override void computeIndirectlyGeneratedFiles() {}
+
 	override void generateFileContentString() {
 		
-		
 		this.fileContentString = '''package «getPackageName(baseModelElement)»;
-public class «baseModelElement.name.toFirstUpper»Args {}'''
+public class «baseModelElement.name.toFirstUpper»Args {
+«FOR inArg : baseModelElement.inArgs»
+«generateFArg(inArg)»	
+«ENDFOR»
+}'''
 		logger.debug(this.fileContentString)
 	}
 
@@ -66,6 +72,10 @@ public class «baseModelElement.name.toFirstUpper»Args {}'''
 			default: {
 			}
 		}
+	}
+	
+	private def String generateFArg(FArgument arg){
+		''''''
 	}
 
 }

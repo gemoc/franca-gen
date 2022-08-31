@@ -24,7 +24,28 @@ class FDInterfaceJavaGen extends AbstractJavaFileGenerator<FDInterface> {
 		this.deployedInterface = new FDeployedInterface(fdi)
 		ipAccessor = new RPCSpec.InterfacePropertyAccessor(deployedInterface);
 	}
-
+	
+	override void computeIndirectlyGeneratedFiles() {
+		for (method : deployedInterface.FInterface.methods) {
+			if(method.inArgs.size != 0) {
+				switch (ipAccessor.getArgsType(method)) {
+					case dedicatedClass: {
+						val argGenerator = new FMethodArgsJavaGen(this.baseFileName, method, generatedFileMap)
+						this.generatedFileMap.put(method, argGenerator)
+					}
+					case optimized: {
+						if (method.inArgs.size != 1) {
+							val argGenerator = new FMethodArgsJavaGen(this.baseFileName, method, generatedFileMap)
+							this.generatedFileMap.put(method, argGenerator)
+						}
+					}
+					default: {
+					}
+				}
+			}
+		}
+	}
+	
 	override void generateFileContentString() {
 		val s = generateString()
 		this.fileContentString = '''package «getPackageName()»;
@@ -96,8 +117,7 @@ default «generateMethodReturnTypeString(method)» «method.name»(«generateMet
 		if(method.inArgs.size == 0) return ""
 		switch (ipAccessor.getArgsType(method)) {
 			case dedicatedClass: {
-				val argGenerator = new FMethodArgsJavaGen(this.baseFileName, method, generatedFileMap)
-				this.generatedFileMap.put(method, argGenerator)
+				val argGenerator = this.generatedFileMap.get(method)
 				addImport('''«argGenerator.javaFullName»''')
 				'''«method.name.toFirstUpper»Args args'''
 			}
@@ -105,8 +125,7 @@ default «generateMethodReturnTypeString(method)» «method.name»(«generateMet
 				if (method.inArgs.size == 1) {
 					'''«method.inArgs.get(0).type» «method.inArgs.get(0).name»'''
 				} else {
-					val argGenerator = new FMethodArgsJavaGen(this.baseFileName, method, generatedFileMap)
-					this.generatedFileMap.put(method, argGenerator)
+					val argGenerator = this.generatedFileMap.get(method)
 					addImport('''«argGenerator.javaFullName»''')
 					'''«method.name.toFirstUpper»Args args'''
 				}
