@@ -17,16 +17,26 @@ typeCollection dto {
 		String parameters
 		String result
 	}
+	<** @description : some description of MSE
+	 **>
 	struct MSE  {
+		<** @description : some description of callerEObjectURI **>
 		String callerEObjectURI
+		<** @description : some description of actionID **>
 		String actionID
 	}
 }
 
+<** @description : some description of EngineAddonProtocolClient **>
 interface EngineAddonProtocolClient {
 	version { major 0 minor 0	}
+	
+	<** @description : some description of engineAboutToStart
+	 **>
 	method engineAboutToStart {
 		in {
+			<** @description : some description of engine
+	 		**>
 			dto.ExecutionEngine engine
 		}
 		out {
@@ -37,8 +47,16 @@ interface EngineAddonProtocolClient {
 			dto.ExecutionEngine engine
 		}
 	}
+	
+	method engineStartedNotif fireAndForget {
+		in {
+			dto.ExecutionEngine engine
+		}
+	}
 }
 
+
+<** @description : some description of EngineAddonProtocolServer **>
 interface EngineAddonProtocolServer {
 	method initialization {}
 	method getState {
@@ -46,6 +64,7 @@ interface EngineAddonProtocolServer {
 	method getStep {
 	}
 	
+	// not supported yet
 	broadcast engineAboutToStart selective {
 		out { dto.ExecutionEngine engine }
 	}

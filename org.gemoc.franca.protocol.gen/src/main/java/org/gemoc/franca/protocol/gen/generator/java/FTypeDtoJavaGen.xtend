@@ -80,7 +80,7 @@ public class «fstructype.name» {
 public class «fstructype.name» «IF fstructype.base !== null» extends «fstructype.base.name»«ENDIF»{
 	// «fstructype.class»	
 	«FOR field : fstructype.elements»
-	«FTypeHelper.generateTypedElementString(field, generatedFileMap, importString)»	
+	«FrancaJavaGenHelper.generateTypedElementString(field, generatedFileMap, importString)»	
 	«ENDFOR»
 }'''
 	}

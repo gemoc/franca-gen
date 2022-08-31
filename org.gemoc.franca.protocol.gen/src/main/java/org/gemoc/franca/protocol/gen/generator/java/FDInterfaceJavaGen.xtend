@@ -74,16 +74,19 @@ import «element»;
 
 	private def String generateString() {
 
-	'''public interface I«deployedInterface.FInterface.name.toFirstUpper» {
+	'''«FrancaJavaGenHelper.generateComment(deployedInterface.FInterface.comment)»
+public interface I«deployedInterface.FInterface.name.toFirstUpper» {
 	«FOR method : deployedInterface.FInterface.methods»
 		«generateMethodString(method)»	
 	«ENDFOR»
 }'''
+
 	}
 
 	private def String generateMethodString(FMethod method) {
 
-		'''«generateMethodAnnotationString(method)»			
+		'''«FrancaJavaGenHelper.generateComment(method.comment)»
+«generateMethodAnnotationString(method)»			
 default «generateMethodReturnTypeString(method)» «method.name»(«generateMethodParameterString(method)»){
 	throw new UnsupportedOperationException();
 }'''

@@ -7,17 +7,21 @@ import java.util.HashMap
 import org.eclipse.emf.ecore.EObject
 import java.util.HashSet
 import org.franca.core.franca.FTypedElement
+import org.franca.core.franca.FAnnotation
+import org.franca.core.franca.FAnnotationBlock
 
-class FTypeHelper {
+class FrancaJavaGenHelper {
 	
-	static Logger logger = LoggerFactory.getLogger(FTypeHelper)
+	static Logger logger = LoggerFactory.getLogger(FrancaJavaGenHelper)
 	
 	static def String generateTypedElementString(FTypedElement typedElement, HashMap<EObject, AbstractJavaFileGenerator<?>> generatedFileMap, HashSet<String> importString) {
 		if (typedElement.array) {
 			importString.add("java.util.List")
-			'''List<«FTypeHelper.generateTypeRefString(typedElement.type, generatedFileMap, importString)»> «typedElement.name»;'''
+			'''«generateComment(typedElement.comment)»
+List<«FrancaJavaGenHelper.generateTypeRefString(typedElement.type, generatedFileMap, importString)»> «typedElement.name»;'''
 		} else {
-			'''«FTypeHelper.generateTypeRefString(typedElement.type, generatedFileMap, importString)» «typedElement.name»;'''
+			'''«generateComment(typedElement.comment)»
+«FrancaJavaGenHelper.generateTypeRefString(typedElement.type, generatedFileMap, importString)» «typedElement.name»;'''
 		}
 	}
 	
@@ -40,5 +44,13 @@ class FTypeHelper {
 			}
 		} else
 			'''Object'''
+	}
+	
+	static def String generateComment(FAnnotationBlock annot) {
+		if(annot === null || annot.elements.empty) return ''''''
+		'''/** «FOR element : annot.elements»
+		  «element.type.getName.toFirstUpper»: «element.comment»
+		  */«ENDFOR»'''
+		
 	}
 }
