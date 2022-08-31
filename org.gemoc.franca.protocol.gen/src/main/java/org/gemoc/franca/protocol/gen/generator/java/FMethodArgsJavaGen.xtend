@@ -43,13 +43,15 @@ class FMethodArgsJavaGen extends AbstractJavaFileGenerator<FMethod> {
 
 	override void generateFileContentString() {
 		
+		val s = generateString(baseModelElement)
 		this.fileContentString = '''package «getPackageName(baseModelElement)»;
-public class «baseModelElement.name.toFirstUpper»Args {
-«FOR inArg : baseModelElement.inArgs»
-«generateFArg(inArg)»	
+«FOR element : importString.sort»
+import «element»;
 «ENDFOR»
-}'''
+«s»
+'''
 		logger.debug(this.fileContentString)
+		
 	}
 
 	override String getFileName() {
@@ -74,8 +76,14 @@ public class «baseModelElement.name.toFirstUpper»Args {
 		}
 	}
 	
-	private def String generateFArg(FArgument arg){
-		''''''
+	private def String generateString(FMethod method){
+		'''@JsonRpcData
+		public class «method.name.toFirstUpper»Args {
+			«FOR inArg : baseModelElement.inArgs»
+				«FTypeHelper.generateTypedElementString(inArg, generatedFileMap, importString)»		
+		«	ENDFOR»
+		}'''
 	}
+
 
 }

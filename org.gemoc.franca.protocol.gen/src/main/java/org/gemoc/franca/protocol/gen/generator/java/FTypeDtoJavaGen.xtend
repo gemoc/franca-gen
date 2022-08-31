@@ -41,7 +41,7 @@ class FTypeDtoJavaGen extends AbstractJavaFileGenerator<FType> {
 		
 		val s = generateString(baseModelElement)
 		this.fileContentString = '''package «getPackageName(baseModelElement)»;
-«FOR element : importString»
+«FOR element : importString.sort»
 import «element»;
 «ENDFOR»
 «s»
@@ -77,43 +77,12 @@ public class «fstructype.name» {
 	private def dispatch String generateString(FStructType fstructype) {
 		addImport( "org.eclipse.lsp4j.generator.JsonRpcData")
 		'''@JsonRpcData
-class «fstructype.name» «IF fstructype.base !== null» extends «fstructype.base.name»«ENDIF»{
+public class «fstructype.name» «IF fstructype.base !== null» extends «fstructype.base.name»«ENDIF»{
 	// «fstructype.class»	
 	«FOR field : fstructype.elements»
-	«generateFieldString(field, fstructype)»	
+	«FTypeHelper.generateTypedElementString(field, generatedFileMap, importString)»	
 	«ENDFOR»
 }'''
-	}
-
-	private def String generateFieldString(FField field, FType ftype) {
-		field.type
-		if (field.array) {
-			addImport("java.util.List")
-			'''List<«generateFieldTypeString(field.type, ftype)»> «field.name»;'''
-		} else {
-			'''«generateFieldTypeString(field.type, ftype)» «field.name»;'''
-		}
-	}
-
-	private def String generateFieldTypeString(FTypeRef ftypeRef, FType ftype) {
-		if (ftypeRef.derived !== null) {
-			addImport( '''«getPackageName(ftypeRef.derived)».«ftypeRef.derived.name»''')
-			'''«ftypeRef.derived.name»'''
-		} else if (ftypeRef.predefined !== null) {
-			switch (ftypeRef.predefined) {
-				case BOOLEAN: {
-					'''Boolean'''
-				}
-				case STRING: {
-					'''String'''
-				}
-				default: {
-					logger.warn('''generateFieldTypeString not implemented yet for «ftypeRef»''')
-					''' /* Not implemented yet for «ftypeRef.predefined» */'''
-				}
-			}
-		} else
-			'''Object'''
 	}
 
 	def String getPackageName(FType ftype) {

@@ -49,7 +49,7 @@ class FDInterfaceJavaGen extends AbstractJavaFileGenerator<FDInterface> {
 	override void generateFileContentString() {
 		val s = generateString()
 		this.fileContentString = '''package «getPackageName()»;
-«FOR element : this.importString»
+«FOR element : this.importString.sort»
 import «element»;
 «ENDFOR»
 «s»
