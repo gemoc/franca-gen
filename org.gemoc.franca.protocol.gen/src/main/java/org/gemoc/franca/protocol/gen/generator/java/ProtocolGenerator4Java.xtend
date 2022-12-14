@@ -1,21 +1,19 @@
 package org.gemoc.franca.protocol.gen.generator.java
 
+import java.util.HashMap
 import java.util.List
-import org.eclipse.emf.common.util.URI
-import org.eclipse.emf.ecore.resource.Resource
+import org.eclipse.emf.ecore.EObject
 import org.eclipse.emf.ecore.resource.ResourceSet
-import org.franca.core.franca.FModel
 import org.franca.core.franca.FType
 import org.franca.deploymodel.core.FDModelExtender
-import org.franca.deploymodel.core.FDeployedInterface
 import org.franca.deploymodel.dsl.fDeploy.FDInterface
 import org.franca.deploymodel.dsl.fDeploy.FDModel
 import org.gemoc.franca.protocol.gen.generator.AbstractProtocolGenerator
-import org.slf4j.LoggerFactory
 import org.slf4j.Logger
-import java.util.HashMap
-import org.franca.core.franca.FModelElement
-import org.eclipse.emf.ecore.EObject
+import org.slf4j.LoggerFactory
+import org.eclipse.xtext.naming.DefaultDeclarativeQualifiedNameProvider
+import org.eclipse.xtext.naming.SimpleNameProvider
+import org.franca.core.dsl.FrancaNameProvider
 
 class ProtocolGenerator4Java extends AbstractProtocolGenerator {
 	
@@ -25,7 +23,9 @@ class ProtocolGenerator4Java extends AbstractProtocolGenerator {
 		super(fdeplFile, outFolder)
 	}
 	
-	public HashMap<EObject, AbstractJavaFileGenerator<?>> generatedFileMap = newHashMap
+	public HashMap<String, AbstractJavaFileGenerator<?>> generatedFileMap = newHashMap
+	
+	FrancaNameProvider nameProvider = new FrancaNameProvider
 
 	override void generate() {
 		// generate types DTO
@@ -37,19 +37,20 @@ class ProtocolGenerator4Java extends AbstractProtocolGenerator {
 		val List<FType> fTypes = rs.allContents.filter(FType).toList
 		fTypes.forEach[ ft |
 			val FTypeDtoJavaGen typeDtoJavaGen = new FTypeDtoJavaGen(outputFolder, ft, generatedFileMap)
-			generatedFileMap.put(ft, typeDtoJavaGen)
+			generatedFileMap.put(FrancaHelper.getQName(ft), typeDtoJavaGen)
 		]
 		
 		var FDModelExtender fdmodelExt = new FDModelExtender(fdmodel)
 		var List<FDInterface> interfaces = fdmodelExt.getFDInterfaces()
 		
 		for (FDInterface fdInterface : interfaces) {
-			val FDInterfaceJavaGen fdiJavaGen = new FDInterfaceJavaGen(outputFolder, fdInterface, generatedFileMap)	
-			generatedFileMap.put(fdInterface, fdiJavaGen)
+			val FDInterfaceJavaGen fdiJavaGen = new FDInterfaceJavaGen(outputFolder, fdInterface, generatedFileMap)
+			logger.debug(FrancaHelper.getQName(fdInterface.target))	
+			generatedFileMap.put(FrancaHelper.getQName(fdInterface.target), fdiJavaGen)
 		} 
 		// recursive call until no more generator are added ?
 		var addedGenerator = true
-		logger.debug('''«generatedFileMap.values.size» direct files to generated''')
+		logger.debug('''«generatedFileMap.values.size» direct files to generate''')
 		while (addedGenerator) {
 			val nbBefore = generatedFileMap.values.size
 			for (generator : generatedFileMap.values.clone) {
@@ -60,6 +61,8 @@ class ProtocolGenerator4Java extends AbstractProtocolGenerator {
 				logger.debug('''Added «generatedFileMap.values.size - nbBefore» indirect files to generate''')
 			}
 		}
+		logger.debug('''Generated file list:
+		    «generatedFileMap.keySet.map[it.toString].join("\n")»''')
 		
 		// Phase 2, generate content and serialize
 		logger.info('''Serializing «generatedFileMap.values.size» files...''')

@@ -9,9 +9,9 @@ import org.slf4j.LoggerFactory
 
 import static extension org.eclipse.xtext.EcoreUtil2.*
 
-class FMethodArgsJavaGen extends AbstractJavaFileGenerator<FMethod> {
+class FMethodResponseJavaGen extends AbstractJavaFileGenerator<FMethod> {
 
-	static Logger logger = LoggerFactory.getLogger(FMethodArgsJavaGen)
+	static Logger logger = LoggerFactory.getLogger(FMethodResponseJavaGen)
 
 	enum PackageNameStrategy {
 		fixed,
@@ -48,11 +48,11 @@ import «element»;
 	}
 
 	override String getFileName() {
-		val fileName = '''«baseFileName»/«getPackageName(baseModelElement).replaceAll("\\.","/")»/«baseModelElement.name.toFirstUpper»Arguments.java'''
+		val fileName = '''«baseFileName»/«getPackageName(baseModelElement).replaceAll("\\.","/")»/«baseModelElement.name.toFirstUpper»Response.java'''
 		fileName
 	}
 	override String getJavaFullName() {
-		'''«getPackageName(baseModelElement)».«baseModelElement.name.toFirstUpper»Arguments'''
+		'''«getPackageName(baseModelElement)».«baseModelElement.name.toFirstUpper»Response'''
 		
 	}
 
@@ -72,7 +72,7 @@ import «element»;
 	private def String generateString(FMethod method){
 		addImport( "org.eclipse.lsp4j.generator.JsonRpcData")
 		'''@JsonRpcData
-		public class «method.name.toFirstUpper»Arguments {
+		public class «method.name.toFirstUpper»Response {
 			«FOR inArg : baseModelElement.inArgs»
 				«FrancaJavaGenHelper.generateTypedElementString(inArg, generatedFileMap, importString)»		
 		«	ENDFOR»

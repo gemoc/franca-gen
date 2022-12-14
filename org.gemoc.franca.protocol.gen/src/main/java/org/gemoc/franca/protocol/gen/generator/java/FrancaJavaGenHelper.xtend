@@ -1,20 +1,22 @@
 package org.gemoc.franca.protocol.gen.generator.java
 
-import org.franca.core.franca.FTypeRef
-import org.slf4j.LoggerFactory
-import org.slf4j.Logger
 import java.util.HashMap
-import org.eclipse.emf.ecore.EObject
 import java.util.HashSet
-import org.franca.core.franca.FTypedElement
-import org.franca.core.franca.FAnnotation
+import org.eclipse.emf.ecore.EObject
 import org.franca.core.franca.FAnnotationBlock
+import org.franca.core.franca.FTypeRef
+import org.franca.core.franca.FTypedElement
+import org.slf4j.Logger
+import org.slf4j.LoggerFactory
+import org.franca.core.dsl.FrancaNameProvider
 
 class FrancaJavaGenHelper {
 	
 	static Logger logger = LoggerFactory.getLogger(FrancaJavaGenHelper)
 	
-	static def String generateTypedElementString(FTypedElement typedElement, HashMap<EObject, AbstractJavaFileGenerator<?>> generatedFileMap, HashSet<String> importString) {
+	static FrancaNameProvider nameProvider = new FrancaNameProvider
+	
+	static def String generateTypedElementString(FTypedElement typedElement, HashMap<String, AbstractJavaFileGenerator<?>> generatedFileMap, HashSet<String> importString) {
 		if (typedElement.array) {
 			//importString.add("java.util.List")
 			'''«generateComment(typedElement.comment)»
@@ -25,10 +27,17 @@ class FrancaJavaGenHelper {
 		}
 	}
 	
-	static def String generateTypeRefString(FTypeRef ftypeRef, HashMap<EObject, AbstractJavaFileGenerator<?>> generatedFileMap, HashSet<String> importString) {
-		if (ftypeRef.derived !== null && generatedFileMap.get(ftypeRef.derived) !== null) {
-			importString.add( '''«generatedFileMap.get(ftypeRef.derived).javaFullName»''')
-			'''«ftypeRef.derived.name»'''
+	static def String generateTypeRefString(FTypeRef ftypeRef, HashMap<String, AbstractJavaFileGenerator<?>> generatedFileMap, HashSet<String> importString) {
+
+		if (ftypeRef.derived !== null) {
+			val derivedTypeFQN = FrancaHelper.getQName(ftypeRef.derived) 
+			if( generatedFileMap.get(derivedTypeFQN) !== null) {
+				importString.add( '''«generatedFileMap.get(derivedTypeFQN).javaFullName»''')
+				'''«ftypeRef.derived.name»'''
+			} else {
+				logger.warn('''generateTypeRefString not implemented yet for «ftypeRef» / «derivedTypeFQN»''')
+				''' /* Not implemented yet for «ftypeRef.predefined» */'''
+			}
 		} else if (ftypeRef.predefined !== null) {
 			switch (ftypeRef.predefined) {
 				case BOOLEAN: {

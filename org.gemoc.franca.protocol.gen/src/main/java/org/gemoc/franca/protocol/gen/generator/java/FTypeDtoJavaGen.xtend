@@ -3,12 +3,10 @@ package org.gemoc.franca.protocol.gen.generator.java
 import java.util.HashMap
 import org.eclipse.emf.ecore.EObject
 import org.franca.core.franca.FCompoundType
-import org.franca.core.franca.FField
 import org.franca.core.franca.FModel
 import org.franca.core.franca.FStructType
 import org.franca.core.franca.FType
 import org.franca.core.franca.FTypeCollection
-import org.franca.core.franca.FTypeRef
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 
@@ -27,11 +25,11 @@ class FTypeDtoJavaGen extends AbstractJavaFileGenerator<FType> {
 	public String fixedPackageName = ""
 
 	
-	new(String baseFileName, FType ftype, HashMap<EObject, AbstractJavaFileGenerator<?>> generatedFileMap) {
+	new(String baseFileName, FType ftype, HashMap<String, AbstractJavaFileGenerator<?>> generatedFileMap) {
 		super(baseFileName, ftype, generatedFileMap)
 	}
 
-	new(String baseFileName, String packageName, FType ftype, HashMap<EObject, AbstractJavaFileGenerator<?>> generatedFileMap) {
+	new(String baseFileName, String packageName, FType ftype, HashMap<String, AbstractJavaFileGenerator<?>> generatedFileMap) {
 		super(baseFileName, ftype, generatedFileMap)
 		this.packageNameStrategy = PackageNameStrategy.fixed
 		this.fixedPackageName = packageName

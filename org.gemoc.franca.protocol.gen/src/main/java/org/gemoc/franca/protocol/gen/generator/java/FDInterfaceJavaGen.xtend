@@ -11,15 +11,19 @@ import org.slf4j.LoggerFactory
 
 import static extension org.eclipse.xtext.EcoreUtil2.*
 import org.franca.deploymodel.dsl.fDeploy.FDInterface
+import org.eclipse.xtext.naming.DefaultDeclarativeQualifiedNameProvider
+import org.franca.core.dsl.FrancaNameProvider
 
 class FDInterfaceJavaGen extends AbstractJavaFileGenerator<FDInterface> {
 	static Logger logger = LoggerFactory.getLogger(FDInterfaceJavaGen)
 	
 	FDeployedInterface deployedInterface
 	RPCSpec.InterfacePropertyAccessor ipAccessor
+	
+	FrancaNameProvider nameProvider = new FrancaNameProvider
 
 	// HashMap<FDeployedInterface, HashSet<String>> importStringMap = newHashMap
-	new(String baseFileName, FDInterface fdi, HashMap<EObject, AbstractJavaFileGenerator<?>> generatedFileMap) {
+	new(String baseFileName, FDInterface fdi, HashMap<String, AbstractJavaFileGenerator<?>> generatedFileMap) {
 		super(baseFileName, fdi, generatedFileMap)
 		this.deployedInterface = new FDeployedInterface(fdi)
 		ipAccessor = new RPCSpec.InterfacePropertyAccessor(deployedInterface);
@@ -31,12 +35,13 @@ class FDInterfaceJavaGen extends AbstractJavaFileGenerator<FDInterface> {
 				switch (ipAccessor.getArgsType(method)) {
 					case dedicatedClass: {
 						val argGenerator = new FMethodArgsJavaGen(this.baseFileName, method, generatedFileMap)
-						this.generatedFileMap.put(method, argGenerator)
+						
+						this.generatedFileMap.put(nameProvider.getFullyQualifiedName(method).toString+"Arguments", argGenerator)
 					}
 					case optimized: {
 						if (method.inArgs.size != 1) {
 							val argGenerator = new FMethodArgsJavaGen(this.baseFileName, method, generatedFileMap)
-							this.generatedFileMap.put(method, argGenerator)
+							this.generatedFileMap.put(nameProvider.getFullyQualifiedName(method).toString+"Arguments", argGenerator)
 						}
 					}
 					default: {
@@ -120,7 +125,7 @@ default «generateMethodReturnTypeString(method)» «method.name»(«generateMet
 		if(method.inArgs.size == 0) return ""
 		switch (ipAccessor.getArgsType(method)) {
 			case dedicatedClass: {
-				val argGenerator = this.generatedFileMap.get(method)
+				val argGenerator = this.generatedFileMap.get(nameProvider.getFullyQualifiedName(method).toString+"Arguments")
 				addImport('''«argGenerator.javaFullName»''')
 				'''«method.name.toFirstUpper»Arguments args'''
 			}
@@ -128,7 +133,7 @@ default «generateMethodReturnTypeString(method)» «method.name»(«generateMet
 				if (method.inArgs.size == 1) {
 					'''«method.inArgs.get(0).type» «method.inArgs.get(0).name»'''
 				} else {
-					val argGenerator = this.generatedFileMap.get(method)
+					val argGenerator = this.generatedFileMap.get(nameProvider.getFullyQualifiedName(method).toString+"Arguments")
 					addImport('''«argGenerator.javaFullName»''')
 					'''«method.name.toFirstUpper»Arguments args'''
 				}
