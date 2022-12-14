@@ -1,6 +1,7 @@
 package org.gemoc.franca.protocol.gen.plugin;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
@@ -119,6 +120,12 @@ public class FrancaProtocolGenMojo extends AbstractMojo
 		
 		if(fdeplFile != null ) {
 			getLog().debug("Generating Franca deployment accessors for " + fdeplFile.getAbsolutePath());
+			try {
+				getLog().info("Generating Franca deployment accessors for " + fdeplFile.getCanonicalPath());
+				fdeplFile = fdeplFile.getCanonicalFile();
+			} catch (IOException e) {
+				throw new MojoExecutionException(e.getMessage(), e);
+			}
 			generate(fdeplFile, outputDirectory);
 		} else {
 			// Find Franca deployment files to process.

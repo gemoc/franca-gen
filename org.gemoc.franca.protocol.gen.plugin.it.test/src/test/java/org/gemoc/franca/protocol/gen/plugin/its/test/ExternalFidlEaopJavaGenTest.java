@@ -57,6 +57,7 @@ public class ExternalFidlEaopJavaGenTest extends TestCase
         List<String> cliOptions = new ArrayList<String>();
         cliOptions.add( "-N" );
         cliOptions.add( "-Dorg.slf4j.simpleLogger.log.org.gemoc=debug");
+        cliOptions.add( "-Dfdepl.file="+verifier.getBasedir()+"/../../../../examples/org.gemoc.franca.examples.eaop.wsjsonrpc.protocol/models/org/gemoc/franca/examples/eaop/wsjsonrpc/deploy/eaopDeploy.fdepl");
         verifier.setCliOptions(cliOptions);
         verifier.executeGoal( "install" );
  

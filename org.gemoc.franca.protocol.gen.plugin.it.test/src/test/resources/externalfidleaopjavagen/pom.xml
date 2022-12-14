@@ -11,6 +11,11 @@
 		<maven.compiler.target>11</maven.compiler.target>
 		<maven.compiler.source>11</maven.compiler.source>
 		<lsp4j.version>0.15.0</lsp4j.version>
+		<!-- allow to externally set the location of the file
+		 this is required because when run locally ${project.basedir} resolves to org.gemoc.franca.protocol.gen.plugin.it.test/src/test/resources/externalfidleaopjavagen
+		 but when run from the test suite ${project.basedir} resolves to          org.gemoc.franca.protocol.gen.plugin.it.test/target/test-classes/externalfidleaopjavagen
+		-->
+		<fdepl.file>${project.basedir}/../../../../../examples/org.gemoc.franca.examples.eaop.wsjsonrpc.protocol/models/org/gemoc/franca/examples/eaop/wsjsonrpc/deploy/eaopDeploy.fdepl</fdepl.file>
 	</properties>
 
 	<dependencies>
@@ -60,7 +65,7 @@
 				<version>0.0.1-SNAPSHOT</version>
 				<configuration>
 					<generator>java</generator>
-					<fdeplFile>${project.directory}/../../../../../examples/org.gemoc.franca.examples.eaop.wsjsonrpc.protocol/models/org/gemoc/franca/examples/eaop/wsjsonrpc/deploy/eaopDeploy.fdepl</fdeplFile>
+					<fdeplFile>${fdepl.file}</fdeplFile>
 					<outputDirectory>${project.build.directory}/src-gen</outputDirectory>
 				</configuration>
 				<executions>
