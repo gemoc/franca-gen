@@ -72,11 +72,11 @@ import «element»;
 	private def String generateString(FMethod method){
 		addImport( "org.eclipse.lsp4j.generator.JsonRpcData")
 		'''@JsonRpcData
-		public class «method.name.toFirstUpper»Arguments {
-			«FOR inArg : baseModelElement.inArgs»
-				«FrancaJavaGenHelper.generateTypedElementString(inArg, generatedFileMap, importString)»		
-		«	ENDFOR»
-		}'''
+public class «method.name.toFirstUpper»Arguments {
+	«FOR inArg : baseModelElement.inArgs»
+		«FrancaJavaGenHelper.generateTypedElementString(inArg, generatedFileMap, importString)»		
+	«	ENDFOR»
+}'''
 	}
 
 

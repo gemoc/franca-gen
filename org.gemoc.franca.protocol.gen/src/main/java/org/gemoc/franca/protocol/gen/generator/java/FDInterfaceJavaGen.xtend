@@ -48,6 +48,10 @@ class FDInterfaceJavaGen extends AbstractJavaFileGenerator<FDInterface> {
 					}
 				}
 			}
+			if(method.outArgs.size != 0) {
+				val respGenerator = new FMethodResponseJavaGen(this.baseFileName, method, generatedFileMap)
+				this.generatedFileMap.put(nameProvider.getFullyQualifiedName(method).toString+"Response", respGenerator)
+			}
 		}
 	}
 	
@@ -109,6 +113,7 @@ default «generateMethodReturnTypeString(method)» «method.name»(«generateMet
 
 	private def String generateMethodReturnTypeString(FMethod method) {
 
+
 		if (method.isFireAndForget) {
 			'''void'''
 		} else {
@@ -116,7 +121,10 @@ default «generateMethodReturnTypeString(method)» «method.name»(«generateMet
 				addImport("java.util.concurrent.CompletableFuture")
 				'''CompletableFuture<Void>'''
 			} else {
-				'''/* TODO */ void'''
+				
+				val respGenerator = this.generatedFileMap.get(nameProvider.getFullyQualifiedName(method).toString+"Response")
+				addImport('''«respGenerator.javaFullName»''')
+				'''CompletableFuture<«method.name.toFirstUpper»Response>'''
 			}
 		}
 	}
